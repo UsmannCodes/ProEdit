@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U-PROTECT | CYBER SHIELD PRO</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@200;400;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root { --p: #6366f1; --accent: #00f2fe; --bg: #010409; --panel: rgba(13, 17, 23, 0.85); }
+    
+    body { 
+      margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
+      color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0d1117 0%, #000 100%); overflow: hidden; }
+    
+    .cyber-shield {
+        position: absolute; width: 600px; height: 600px; border: 2px solid rgba(99, 102, 241, 0.15);
+        border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotateX(60deg);
+        animation: rotateShield 20s linear infinite;
+    }
+    @keyframes rotateShield { from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); } to { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); } }
+
+    header { 
+      padding: 15px 40px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(1, 4, 9, 0.6); backdrop-filter: blur(15px); z-index: 1100; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .logo-text { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; letter-spacing: 3px; color: white; text-shadow: 0 0 10px var(--p); }
+
+    .nav-wrap { 
+      position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--panel); backdrop-filter: blur(20px);
+      padding: 10px 25px; border-radius: 100px; display: flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+    }
+
+    .tool-btn { 
+      background: transparent; border: none; color: #94a3b8; width: 42px; height: 42px;
+      border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .tool-btn:hover { background: rgba(255,255,255,0.05); color: white; transform: scale(1.1); }
+    .tool-btn.active { background: var(--p); color: white; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+
+    .viewport { flex: 1; overflow: auto; padding: 180px 20px 100px; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
+    
+    .page-node { 
+        position: relative; margin-bottom: 60px; background: white; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.9); transform-origin: center center;
+    }
+
+    /* --- TOP PAGE INDICATOR --- */
+    .page-indicator {
+        position: absolute; top: -35px; right: 0;
+        background: rgba(99, 102, 241, 0.9); color: white; padding: 4px 12px; border-radius: 4px;
+        font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+        letter-spacing: 1px; pointer-events: none; white-space: nowrap;
+        border-left: 3px solid var(--accent);
+    }
+    
+    .layer-draw { position: absolute; inset: 0; cursor: crosshair; z-index: 10; }
+    .mask-unit { position: absolute; z-index: 11; }
+    .mask-unit.selected { outline: 3px solid var(--accent); }
+    .mask-unit.circle { border-radius: 50%; }
+
+    .hero-sec { text-align: center; margin-top: 5vh; animation: heroIn 1.5s ease-out; }
+    @keyframes heroIn { from { opacity: 0; transform: translateY(20px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+
+    .hero-h1 { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; color: white; position: relative; display: inline-block; line-height: 1; }
+    .hero-h1::after {
+        content: 'SHIELD YOUR DOCUMENTS'; position: absolute; inset: 0; color: var(--accent);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); animation: textScan 4s infinite alternate;
+    }
+    @keyframes textScan { 0% { clip-path: polygon(0 0, 100% 0, 100% 15%, 0 15%); } 100% { clip-path: polygon(0 85%, 100% 85%, 100% 100%, 0 100%); } }
+
+    .main-btn {
+      background: white; color: black; border: none; padding: 15px 40px;
+      border-radius: 100px; font-weight: 800; cursor: pointer; transition: 0.4s;
+      font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 2px;
+    }
+    .main-btn:hover { background: var(--p); color: white; transform: scale(1.05); }
+
+    .zoom-dock {
+        position: fixed; bottom: 80px; right: 40px; display: flex; align-items: center; gap: 8px;
+        background: var(--panel); padding: 8px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+    }
+
+    footer { background: #000; padding: 10px 0; border-top: 1px solid var(--accent); overflow: hidden; z-index: 100; }
+    .marquee { display: inline-block; animation: scrollMarquee 30s linear infinite; font-weight: 700; color: #fff; font-size: 12px; }
+    @keyframes scrollMarquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+    .swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+    .swatch.active { border-color: white; transform: scale(1.2); }
+    #fileIn { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="space-bg"><div class="cyber-shield"></div></div>
+
+<header>
+  <div class="logo-text">U-PROTECT.v2</div>
+  <button onclick="handleExport()" class="main-btn" style="padding: 10px 25px;">EXPORT REDACTED</button>
+</header>
+
+<div class="nav-wrap">
+  <button class="tool-btn" onclick="location.reload()"><i class="fa-solid fa-sync"></i></button>
+  <div style="width:1px; height:20px; background:rgba(255,255,255,0.1)"></div>
+  <button class="tool-btn active" id="m-draw" onclick="setMode('draw')"><i class="fa-solid fa-shield-cat"></i></button>
+  <button class="tool-btn" id="m-select" onclick="setMode('select')"><i class="fa-solid fa-fingerprint"></i></button>
+  <div style="width:1px; height:20px; background:rgba(255,255,255,0.1)"></div>
+  <button class="tool-btn" onclick="rotateDoc()"><i class="fa-solid fa-rotate-right"></i></button>
+  <div style="width:1px; height:20px; background:rgba(255,255,255,0.1)"></div>
+  <button class="tool-btn active" id="s-rect" onclick="setShape('rect')"><i class="fa-solid fa-square"></i></button>
+  <button class="tool-btn" id="s-circle" onclick="setShape('circle')"><i class="fa-solid fa-circle"></i></button>
+  <div style="display:flex; gap:10px; margin: 0 10px">
+    <div class="swatch active" data-color="#000" style="background:#000"></div>
+    <div class="swatch" data-color="#fff" style="background:#fff"></div>
+    <div class="swatch" data-color="#ef4444" style="background:#ef4444"></div>
+  </div>
+  <button class="tool-btn" onclick="deleteMask()" style="color:#f87171"><i class="fa-solid fa-eraser"></i></button>
+</div>
+
+<div class="viewport" id="viewer">
+  <div id="home" class="hero-sec">
+    <h1 class="hero-h1">SHIELD YOUR<br>DOCUMENTS</h1>
+    <p style="color: #8492a6; letter-spacing: 3px; margin: 20px 0 40px;"><B>Ultra-Secure Redaction Core</B></p>
+    <button class="main-btn" onclick="document.getElementById('fileIn').click()">SELECT DATA SOURCE</button>
+  </div>
+</div>
+
+<div class="zoom-dock">
+    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(0.1)"><i class="fa-solid fa-plus"></i></button>
+    <span id="zl" style="color:white; font-size:12px; font-weight:bold; min-width:45px; text-align:center">100%</span>
+    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(-0.1)"><i class="fa-solid fa-minus"></i></button>
+</div>
+
+<footer>
+  <div class="marquee">
+    ⚠️ <b>SYSTEM STATUS: ONLINE</b> • 100% LOCAL PROCESSING • DEVELOPED BY **USAMA FAISAL** • PERMANENT REDACTION ENABLED ⚠️
+  </div>
+</footer>
+
+<input type="file" id="fileIn" accept="application/pdf,image/*">
+
+<script>
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const viewer = document.getElementById('viewer');
+  let mode = 'draw', color = '#000', shape = 'rect', zoom = 1.0, rotation = 0, selected = null;
+  let fileName = "Document", fileType = "pdf";
+
+  function setMode(m) { mode = m; document.getElementById('m-draw').classList.toggle('active', m==='draw'); document.getElementById('m-select').classList.toggle('active', m==='select'); deselect(); }
+  function setShape(s) { shape = s; document.getElementById('s-rect').classList.toggle('active', s==='rect'); document.getElementById('s-circle').classList.toggle('active', s==='circle'); }
+  function deselect() { document.querySelectorAll('.mask-unit').forEach(m => m.classList.remove('selected')); selected = null; }
+  function deleteMask() { if(selected) selected.remove(); }
+  
+  function changeZoom(val) {
+    zoom = Math.min(Math.max(0.2, zoom + val), 2.0);
+    applyTransform();
+    document.getElementById('zl').innerText = Math.round(zoom * 100) + '%';
+  }
+
+  function rotateDoc() {
+    rotation = (rotation + 90) % 360;
+    applyTransform();
+  }
+
+  function applyTransform() {
+    document.querySelectorAll('.page-node').forEach(p => {
+        p.style.transform = `scale(${zoom}) rotate(${rotation}deg)`;
+    });
+  }
+
+  document.querySelectorAll('.swatch').forEach(s => {
+    s.onclick = () => {
+      document.querySelectorAll('.swatch').forEach(x => x.classList.remove('active'));
+      s.classList.add('active'); color = s.dataset.color;
+    };
+  });
+
+  document.getElementById('fileIn').onchange = async (e) => {
+    const file = e.target.files[0]; if(!file) return;
+    fileName = file.name.split('.')[0];
+    fileType = file.type.includes('pdf') ? 'pdf' : 'image';
+    document.getElementById('home').style.display = 'none';
+    viewer.innerHTML = ''; rotation = 0; zoom = 1.0;
+
+    if(fileType === "pdf") {
+      const buf = await file.arrayBuffer();
+      const doc = await pdfjsLib.getDocument({data: buf}).promise;
+      const totalPages = doc.numPages;
+      for(let i=1; i<=totalPages; i++) {
+        const page = await doc.getPage(i);
+        const vp = page.getViewport({scale: 2.0});
+        const wrap = createPageNode(vp.width, vp.height, i, totalPages);
+        await page.render({canvasContext: wrap.querySelector('canvas').getContext('2d'), viewport: vp}).promise;
+      }
+    } else {
+      const img = new Image();
+      img.onload = () => {
+        const wrap = createPageNode(img.width, img.height, 1, 1);
+        wrap.querySelector('canvas').getContext('2d').drawImage(img, 0, 0);
+      };
+      img.src = URL.createObjectURL(file);
+    }
+  };
+
+  function createPageNode(w, h, current, total) {
+    const div = document.createElement('div');
+    div.className = 'page-node';
+    div.style.width = w + 'px'; div.style.height = h + 'px';
+    div.innerHTML = `
+        <div class="page-indicator">PAGE ${current} / ${total}</div>
+        <canvas width="${w}" height="${h}"></canvas>
+        <div class="layer-draw"></div>
+    `;
+    viewer.appendChild(div);
+    
+    const layer = div.querySelector('.layer-draw');
+    layer.onmousedown = (e) => {
+      if(mode !== 'draw' || e.button !== 0) return;
+      deselect();
+      const rect = layer.getBoundingClientRect();
+      const startX = (e.clientX - rect.left) / zoom;
+      const startY = (e.clientY - rect.top) / zoom;
+      
+      const mask = document.createElement('div');
+      mask.className = `mask-unit ${shape}`;
+      mask.style.backgroundColor = color;
+      mask.style.left = startX + 'px';
+      mask.style.top = startY + 'px';
+      layer.appendChild(mask);
+      
+      const onMouseMove = (ev) => {
+        const curX = (ev.clientX - rect.left) / zoom;
+        const curY = (ev.clientY - rect.top) / zoom;
+        const dw = curX - startX, dh = curY - startY;
+        mask.style.width = Math.abs(dw) + 'px';
+        mask.style.height = Math.abs(dh) + 'px';
+        mask.style.left = (dw < 0 ? curX : startX) + 'px';
+        mask.style.top = (dh < 0 ? curY : startY) + 'px';
+      };
+      
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        mask.onclick = (m) => { if(mode === 'select') { m.stopPropagation(); deselect(); mask.classList.add('selected'); selected = mask; } };
+      }, {once: true});
+    };
+    return div;
+  }
+
+  async function handleExport() {
+    const pages = document.querySelectorAll('.page-node');
+    if(!pages.length) return;
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+
+    for(let p of pages) {
+      const canvas = p.querySelector('canvas');
+      const masks = p.querySelectorAll('.mask-unit');
+      const out = document.createElement('canvas');
+      
+      if(rotation === 90 || rotation === 270) { out.width = canvas.height; out.height = canvas.width; }
+      else { out.width = canvas.width; out.height = canvas.height; }
+
+      const ctx = out.getContext('2d');
+      ctx.translate(out.width/2, out.height/2);
+      ctx.rotate(rotation * Math.PI / 180);
+      ctx.drawImage(canvas, -canvas.width/2, -canvas.height/2);
+      ctx.setTransform(1,0,0,1,0,0);
+
+      masks.forEach(m => {
+        ctx.fillStyle = m.style.backgroundColor;
+        const ml = parseFloat(m.style.left), mt = parseFloat(m.style.top);
+        const mw = parseFloat(m.style.width), mh = parseFloat(m.style.height);
+        if(m.classList.contains('circle')) { ctx.beginPath(); ctx.arc(ml + mw/2, mt + mh/2, mw/2, 0, Math.PI*2); ctx.fill(); }
+        else { ctx.fillRect(ml, mt, mw, mh); }
+      });
+
+      if(fileType === "pdf") {
+        const img = out.toDataURL('image/jpeg', 0.9);
+        const pw = out.width * 0.75, ph = out.height * 0.75;
+        if(!pdf) pdf = new jsPDF(pw > ph ? 'l' : 'p', 'pt', [pw, ph]);
+        else pdf.addPage([pw, ph], pw > ph ? 'l' : 'p');
+        pdf.addImage(img, 'JPEG', 0, 0, pw, ph);
+      } else {
+        const link = document.createElement('a');
+        link.download = `${fileName}_REDACTED.jpg`;
+        link.href = out.toDataURL('image/jpeg', 0.9);
+        link.click();
+        return;
+      }
+    }
+    if(pdf) pdf.save(`${fileName}_REDACTED.pdf`);
+  }
+</script>
+</body>
+</html>
