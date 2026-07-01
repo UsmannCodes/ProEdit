@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>U-PROTECT-PRO</title>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +17,7 @@
   --bg: #f3f0ff;
   --panel: rgba(255,255,255,0.18);
 }
-    
+
     body { 
       margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
       color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
@@ -89,7 +89,7 @@ linear-gradient(135deg,
     .tool-btn.active { background: var(--p); color: white; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
 
     .viewport { flex: 1; overflow: auto; padding: 180px 20px 100px; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
-    
+
     .page-node { 
         position: relative; margin-bottom: 60px; background: white; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 30px 80px rgba(0,0,0,0.9); transform-origin: center center;
@@ -103,7 +103,7 @@ linear-gradient(135deg,
         letter-spacing: 1px; pointer-events: none; white-space: nowrap;
         border-left: 3px solid var(--accent);
     }
-    
+
     .layer-draw { position: absolute; inset: 0; cursor: crosshair; z-index: 10; }
     .mask-unit { position: absolute; z-index: 11; }
     .mask-unit.selected { outline: 3px solid var(--accent); }
@@ -195,7 +195,7 @@ Developed by USMAN FAISAL
   function setShape(s) { shape = s; document.getElementById('s-rect').classList.toggle('active', s==='rect'); document.getElementById('s-circle').classList.toggle('active', s==='circle'); }
   function deselect() { document.querySelectorAll('.mask-unit').forEach(m => m.classList.remove('selected')); selected = null; }
   function deleteMask() { if(selected) selected.remove(); }
-  
+
   function changeZoom(val) {
     zoom = Math.min(Math.max(0.2, zoom + val), 2.0);
     applyTransform();
@@ -257,7 +257,7 @@ Developed by USMAN FAISAL
         <div class="layer-draw"></div>
     `;
     viewer.appendChild(div);
-    
+
     const layer = div.querySelector('.layer-draw');
     layer.onmousedown = (e) => {
       if(mode !== 'draw' || e.button !== 0) return;
@@ -265,14 +265,14 @@ Developed by USMAN FAISAL
       const rect = layer.getBoundingClientRect();
       const startX = (e.clientX - rect.left) / zoom;
       const startY = (e.clientY - rect.top) / zoom;
-      
+
       const mask = document.createElement('div');
       mask.className = `mask-unit ${shape}`;
       mask.style.backgroundColor = color;
       mask.style.left = startX + 'px';
       mask.style.top = startY + 'px';
       layer.appendChild(mask);
-      
+
       const onMouseMove = (ev) => {
         const curX = (ev.clientX - rect.left) / zoom;
         const curY = (ev.clientY - rect.top) / zoom;
@@ -282,7 +282,7 @@ Developed by USMAN FAISAL
         mask.style.left = (dw < 0 ? curX : startX) + 'px';
         mask.style.top = (dh < 0 ? curY : startY) + 'px';
       };
-      
+
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('mouseup', () => {
         window.removeEventListener('mousemove', onMouseMove);
@@ -302,7 +302,7 @@ Developed by USMAN FAISAL
       const canvas = p.querySelector('canvas');
       const masks = p.querySelectorAll('.mask-unit');
       const out = document.createElement('canvas');
-      
+
       if(rotation === 90 || rotation === 270) { out.width = canvas.height; out.height = canvas.width; }
       else { out.width = canvas.width; out.height = canvas.height; }
 
