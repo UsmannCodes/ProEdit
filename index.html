@@ -1,49 +1,32 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>U-PROTECT-PRO</title>
-
+  <title>U-PROTECT | CYBER SHIELD PRO</title>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@200;400;800&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-  --p: #8b5cf6;
-  --accent: #38bdf8;
-  --bg: #f3f0ff;
-  --panel: rgba(255,255,255,0.18);
-}
-
+    :root { --p: #6366f1; --accent: #00f2fe; --bg: #010409; --panel: rgba(13, 17, 23, 0.85); }
+    
     body { 
       margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
       color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
     }
 
-  .space-bg{
-position:fixed;
-inset:0;
-z-index:-2;
-overflow:hidden;
-
-background:
-radial-gradient(circle at 15% 20%, #b794ff55 0%, transparent 35%),
-radial-gradient(circle at 85% 75%, #6ee7ff55 0%, transparent 35%),
-linear-gradient(135deg,
-#ffffff 0%,
-#f8f5ff 20%,
-#ede9fe 50%,
-#e0f2fe 80%,
-#ffffff 100%);
-}
+    .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0d1117 0%, #000 100%); overflow: hidden; }
+    
+    .cyber-shield {
+        position: absolute; width: 600px; height: 600px; border: 2px solid rgba(99, 102, 241, 0.15);
+        border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotateX(60deg);
+        animation: rotateShield 20s linear infinite;
     }
-    .cyber-shield{
-    border:2px solid rgba(139,92,246,0.2);
-    box-shadow:0 0 80px rgba(139,92,246,0.15);
-}
     @keyframes rotateShield { from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); } to { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); } }
 
     header { 
@@ -51,34 +34,12 @@ linear-gradient(135deg,
       background: rgba(1, 4, 9, 0.6); backdrop-filter: blur(15px); z-index: 1100; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .logo-text { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; letter-spacing: 3px; color: white; text-shadow: 0 0 10px var(--p); }
-<div style="width:1px; height:20px; background:rgba(255,255,255,0.1)"></div>
 
-<button class="tool-btn" onclick="changeZoom(-0.1)" title="Zoom Out">
-    <i class="fa-solid fa-magnifying-glass-minus"></i>
-</button>
-
-<span id="zl"
-      style="color:white;font-size:12px;font-weight:700;
-      min-width:50px;text-align:center;">
-    100%
-</span>
-
-<button class="tool-btn" onclick="changeZoom(0.1)" title="Zoom In">
-    <i class="fa-solid fa-magnifying-glass-plus"></i>
-</button>
-<button class="tool-btn" onclick="changeZoom(-0.1)" title="Zoom Out">
-    <i class="fa-solid fa-magnifying-glass-minus"></i>
-</button>
-
-<span id="zl"
-      style="color:white;font-size:12px;font-weight:700;
-      min-width:50px;text-align:center;">
-    100%
-</span>
-
-<button class="tool-btn" onclick="changeZoom(0.1)" title="Zoom In">
-    <i class="fa-solid fa-magnifying-glass-plus"></i>
-</button>
+    .nav-wrap { 
+      position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
+      background: var(--panel); backdrop-filter: blur(20px);
+      padding: 10px 25px; border-radius: 100px; display: flex; align-items: center; gap: 12px;
+      border: 1px solid rgba(255,255,255,0.1); z-index: 1000;
     }
 
     .tool-btn { 
@@ -89,7 +50,7 @@ linear-gradient(135deg,
     .tool-btn.active { background: var(--p); color: white; box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
 
     .viewport { flex: 1; overflow: auto; padding: 180px 20px 100px; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; }
-
+    
     .page-node { 
         position: relative; margin-bottom: 60px; background: white; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 30px 80px rgba(0,0,0,0.9); transform-origin: center center;
@@ -103,7 +64,7 @@ linear-gradient(135deg,
         letter-spacing: 1px; pointer-events: none; white-space: nowrap;
         border-left: 3px solid var(--accent);
     }
-
+    
     .layer-draw { position: absolute; inset: 0; cursor: crosshair; z-index: 10; }
     .mask-unit { position: absolute; z-index: 11; }
     .mask-unit.selected { outline: 3px solid var(--accent); }
@@ -169,17 +130,21 @@ linear-gradient(135deg,
 
 <div class="viewport" id="viewer">
   <div id="home" class="hero-sec">
-    <h1 class="hero-h1">PROTECT YOUR<br>DOCUMENTS</h1>
+    <h1 class="hero-h1">SHIELD YOUR<br>DOCUMENTS</h1>
     <p style="color: #8492a6; letter-spacing: 3px; margin: 20px 0 40px;"><B>Ultra-Secure Redaction Core</B></p>
-    <button class="main-btn" onclick="document.getElementById('fileIn').click()">SELECT YOUR FILE</button>
+    <button class="main-btn" onclick="document.getElementById('fileIn').click()">SELECT DATA SOURCE</button>
   </div>
+</div>
+
+<div class="zoom-dock">
+    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(0.1)"><i class="fa-solid fa-plus"></i></button>
+    <span id="zl" style="color:white; font-size:12px; font-weight:bold; min-width:45px; text-align:center">100%</span>
+    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(-0.1)"><i class="fa-solid fa-minus"></i></button>
 </div>
 
 <footer>
   <div class="marquee">
-    ⚠️ <b>🛡️ U-PROTECT PDF REDACTOR
-SYSTEM ONLINE • 100% LOCAL PROCESSING • ZERO CLOUD UPLOADS • PERMANENT REDACTION ENABLED
-Developed by USMAN FAISAL
+    ⚠️ <b>SYSTEM STATUS: ONLINE</b> • 100% LOCAL PROCESSING • DEVELOPED BY **USMAN FAISAL** • PERMANENT REDACTION ENABLED ⚠️
   </div>
 </footer>
 
@@ -195,7 +160,7 @@ Developed by USMAN FAISAL
   function setShape(s) { shape = s; document.getElementById('s-rect').classList.toggle('active', s==='rect'); document.getElementById('s-circle').classList.toggle('active', s==='circle'); }
   function deselect() { document.querySelectorAll('.mask-unit').forEach(m => m.classList.remove('selected')); selected = null; }
   function deleteMask() { if(selected) selected.remove(); }
-
+  
   function changeZoom(val) {
     zoom = Math.min(Math.max(0.2, zoom + val), 2.0);
     applyTransform();
@@ -257,7 +222,7 @@ Developed by USMAN FAISAL
         <div class="layer-draw"></div>
     `;
     viewer.appendChild(div);
-
+    
     const layer = div.querySelector('.layer-draw');
     layer.onmousedown = (e) => {
       if(mode !== 'draw' || e.button !== 0) return;
@@ -265,14 +230,14 @@ Developed by USMAN FAISAL
       const rect = layer.getBoundingClientRect();
       const startX = (e.clientX - rect.left) / zoom;
       const startY = (e.clientY - rect.top) / zoom;
-
+      
       const mask = document.createElement('div');
       mask.className = `mask-unit ${shape}`;
       mask.style.backgroundColor = color;
       mask.style.left = startX + 'px';
       mask.style.top = startY + 'px';
       layer.appendChild(mask);
-
+      
       const onMouseMove = (ev) => {
         const curX = (ev.clientX - rect.left) / zoom;
         const curY = (ev.clientY - rect.top) / zoom;
@@ -282,7 +247,7 @@ Developed by USMAN FAISAL
         mask.style.left = (dw < 0 ? curX : startX) + 'px';
         mask.style.top = (dh < 0 ? curY : startY) + 'px';
       };
-
+      
       window.addEventListener('mousemove', onMouseMove);
       window.addEventListener('mouseup', () => {
         window.removeEventListener('mousemove', onMouseMove);
@@ -302,7 +267,7 @@ Developed by USMAN FAISAL
       const canvas = p.querySelector('canvas');
       const masks = p.querySelectorAll('.mask-unit');
       const out = document.createElement('canvas');
-
+      
       if(rotation === 90 || rotation === 270) { out.width = canvas.height; out.height = canvas.width; }
       else { out.width = canvas.width; out.height = canvas.height; }
 
