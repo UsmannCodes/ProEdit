@@ -23,20 +23,21 @@
       color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
     }
 
-   .space-bg{
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at top left, rgba(168,85,247,0.45) 0%, transparent 40%),
-        radial-gradient(circle at bottom right, rgba(56,189,248,0.35) 0%, transparent 45%),
-        linear-gradient(135deg,
-            #f8f5ff 0%,
-            #efe7ff 25%,
-            #e9e5ff 50%,
-            #dbeafe 75%,
-            #f8fbff 100%);
+  .space-bg{
+position:fixed;
+inset:0;
+z-index:-2;
+overflow:hidden;
+
+background:
+radial-gradient(circle at 15% 20%, #b794ff55 0%, transparent 35%),
+radial-gradient(circle at 85% 75%, #6ee7ff55 0%, transparent 35%),
+linear-gradient(135deg,
+#ffffff 0%,
+#f8f5ff 20%,
+#ede9fe 50%,
+#e0f2fe 80%,
+#ffffff 100%);
 }
     }
     .cyber-shield{
@@ -51,11 +52,21 @@
     }
     .logo-text { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; letter-spacing: 3px; color: white; text-shadow: 0 0 10px var(--p); }
 
-    .nav-wrap { 
-      position: fixed; top: 90px; left: 50%; transform: translateX(-50%);
-      background: var(--panel); backdrop-filter: blur(20px);
-      padding: 10px 25px; border-radius: 100px; display: flex; align-items: center; gap: 12px;
-      border: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+    <div style="width:1px; height:20px; background:rgba(255,255,255,0.1)"></div>
+
+<button class="tool-btn" onclick="changeZoom(-0.1)" title="Zoom Out">
+    <i class="fa-solid fa-magnifying-glass-minus"></i>
+</button>
+
+<span id="zl"
+      style="color:white;font-size:12px;font-weight:700;
+      min-width:50px;text-align:center;">
+    100%
+</span>
+
+<button class="tool-btn" onclick="changeZoom(0.1)" title="Zoom In">
+    <i class="fa-solid fa-magnifying-glass-plus"></i>
+</button>
     }
 
     .tool-btn { 
@@ -150,12 +161,6 @@
     <p style="color: #8492a6; letter-spacing: 3px; margin: 20px 0 40px;"><B>Ultra-Secure Redaction Core</B></p>
     <button class="main-btn" onclick="document.getElementById('fileIn').click()">SELECT YOUR FILE</button>
   </div>
-</div>
-
-<div class="zoom-dock">
-    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(0.1)"><i class="fa-solid fa-plus"></i></button>
-    <span id="zl" style="color:white; font-size:12px; font-weight:bold; min-width:45px; text-align:center">100%</span>
-    <button class="tool-btn" style="width:30px; height:30px" onclick="changeZoom(-0.1)"><i class="fa-solid fa-minus"></i></button>
 </div>
 
 <footer>
