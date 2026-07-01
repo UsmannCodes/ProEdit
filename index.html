@@ -11,20 +11,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@200;400;800&display=swap" rel="stylesheet">
 
   <style>
-    :root { --p: #6366f1; --accent: #00f2fe; --bg: #010409; --panel: rgba(13, 17, 23, 0.85); }
+    :root{
+  --p: #8b5cf6;
+  --accent: #38bdf8;
+  --bg: #f3f0ff;
+  --panel: rgba(255,255,255,0.18);
+}
     
     body { 
       margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
       color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
     }
 
-    .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0d1117 0%, #000 100%); overflow: hidden; }
-    
-    .cyber-shield {
-        position: absolute; width: 600px; height: 600px; border: 2px solid rgba(99, 102, 241, 0.15);
-        border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotateX(60deg);
-        animation: rotateShield 20s linear infinite;
+   .space-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(168,85,247,0.45) 0%, transparent 40%),
+        radial-gradient(circle at bottom right, rgba(56,189,248,0.35) 0%, transparent 45%),
+        linear-gradient(135deg,
+            #f8f5ff 0%,
+            #efe7ff 25%,
+            #e9e5ff 50%,
+            #dbeafe 75%,
+            #f8fbff 100%);
+}
     }
+    .cyber-shield{
+    border:2px solid rgba(139,92,246,0.2);
+    box-shadow:0 0 80px rgba(139,92,246,0.15);
+}
     @keyframes rotateShield { from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); } to { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); } }
 
     header { 
