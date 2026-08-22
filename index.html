@@ -13,15 +13,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@200;400;800&display=swap" rel="stylesheet">
 
   <style>
-    :root { --p: #6366f1; --accent: #00f2fe; --bg: #010409; --panel: rgba(13, 17, 23, 0.85); }
+    :root { --p: #6366f1; --accent: #00a8ff; --bg: #f7f7f5; --panel: rgba(255, 255, 255, 0.92); }
     
-    body { 
-      margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
-      color: #e2e8f0; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
-    }
-
-    .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0d1117 0%, #000 100%); overflow: hidden; }
-    
+   body { 
+  margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg);
+  color: #1e293b; height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+}
+    .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #ffffff 0%, #f3f4f6 100%); overflow: hidden; }
     .cyber-shield {
         position: absolute; width: 600px; height: 600px; border: 2px solid rgba(99, 102, 241, 0.15);
         border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%) rotateX(60deg);
@@ -72,10 +70,9 @@
 
     .hero-sec { text-align: center; margin-top: 5vh; animation: heroIn 1.5s ease-out; }
     @keyframes heroIn { from { opacity: 0; transform: translateY(20px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-
-    .hero-h1 { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; color: white; position: relative; display: inline-block; line-height: 1; }
+.hero-h1 { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; color: #2563eb; position: relative; display: inline-block; line-height: 1; }
     .hero-h1::after {
-        content: 'SHIELD YOUR DOCUMENTS'; position: absolute; inset: 0; color: var(--accent);
+      content: 'SHIELD YOUR DOCUMENTS'; position: absolute; inset: 0; color: var(--accent);
         clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); animation: textScan 4s infinite alternate;
     }
     @keyframes textScan { 0% { clip-path: polygon(0 0, 100% 0, 100% 15%, 0 15%); } 100% { clip-path: polygon(0 85%, 100% 85%, 100% 100%, 0 100%); } }
